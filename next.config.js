@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',  // Включаем статический экспорт для GitHub Pages
+  output: 'export',
   images: {
     unoptimized: true,
   },
