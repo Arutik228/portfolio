@@ -1,16 +1,6 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-    unoptimized: true,
-  },
+  output: 'export',
+  distDir: 'docs',  // Экспорт в папку docs
+  images: { unoptimized: true },
+  trailingSlash: true,
 }
-
-module.exports = nextConfig
