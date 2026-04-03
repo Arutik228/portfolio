@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
 
@@ -25,6 +24,15 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleClick = (e, href) => {
+    e.preventDefault();
+    setIsOpen(false);
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       scrolled ? 'bg-dark/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
@@ -32,57 +40,43 @@ export default function Header() {
       <nav className="container-custom py-4 flex justify-between items-center">
         <motion.a
           href="#hero"
+          onClick={(e) => handleClick(e, '#hero')}
           className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent"
           whileHover={{ scale: 1.05 }}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
         >
-          Alex<span className="text-primary">Dev</span>
+          Арутюн
         </motion.a>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8">
-          {navItems.map((item, index) => (
-            <motion.a
+          {navItems.map((item) => (
+            <a
               key={item.name}
               href={item.href}
+              onClick={(e) => handleClick(e, item.href)}
               className="text-light hover:text-primary transition-colors"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
             >
               {item.name}
-            </motion.a>
+            </a>
           ))}
         </div>
 
-        {/* Mobile Navigation Button */}
-        <button
-          className="md:hidden text-2xl"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <button className="md:hidden text-2xl z-50" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <HiX /> : <HiMenu />}
         </button>
 
-        {/* Mobile Navigation Menu */}
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-dark/95 backdrop-blur-md py-4 md:hidden"
-          >
+          <div className="absolute top-full left-0 w-full bg-dark/95 backdrop-blur-md py-4 md:hidden">
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
                 className="block py-3 text-center hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => handleClick(e, item.href)}
               >
                 {item.name}
               </a>
             ))}
-          </motion.div>
+          </div>
         )}
       </nav>
     </header>
